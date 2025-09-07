@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  bot:
+    build: ./bot
+    depends_on:
+      - api
+  api:
+    build: ./api
+    ports:
+      - "8123:8123"
