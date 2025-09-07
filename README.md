@@ -1,4 +1,4 @@
-# 🌙 Coven Bot (TBD Name)
+# Moonlit
 
 A Discord mini-game bot where players roleplay as witches, join covens, and grow their magical power together.  
 Designed to be approachable for casual players but deep enough to keep engaged players busy with cooperative rituals, spellcrafting, and seasonal events.  
@@ -10,14 +10,10 @@ Designed to be approachable for casual players but deep enough to keep engaged p
 - **Daily Rituals** – Gather herbs, brew potions, and perform divinations.  
 - **Familiars** – Adopt and interact with a magical animal companion.  
 - **Coven System** – Join or create covens, collaborate on shared goals, and level up your sanctum.  
-- **Chant Rituals** – Group activities where coven members recite magical chants in sequence.  
-- **Shared Cauldron Projects** – Pool resources with your coven to unlock buffs and rewards.  
-- **Hex Duels** – Lighthearted PvP spell duels with bragging rights.  
-- **Spellcrafting** – Discover and combine ingredients to unlock new spells and recipes.  
+- **Chant Rituals** – Group activities where coven members recite magical chants in sequence.    
 - **Seasonal Festivals** – Limited-time coven events aligned with moon phases and folklore holidays.  
 - **Grimoire Collection** – Unlock lore, recipes, and familiars as you progress.  
 - **Leaderboards & Titles** – Show off your progression with ranks and coven achievements.  
-- **Wild Magic Misfires** – Even failed rituals have fun, chaotic outcomes (frogs raining, familiars swapping, etc.).  
 
 ---
 
@@ -47,7 +43,7 @@ See the Installation section below for setup instructions.
 
 1. **Clone the repository:**
    ```sh
-   git clone <repo-url>
+   git clone https://github.com/robbitsu/Moonlit
    cd Moonlit
    ```
 2. **Build and start the services:**
