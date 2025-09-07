@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
+from database import SessionLocal, engine, Base
 
 app = FastAPI(title="Moonlit API", version="1.0.0")
 
