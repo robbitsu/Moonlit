@@ -1,19 +1,19 @@
 meta {
-  name: Create Player
+  name: Create Coven
   type: http
-  seq: 2
+  seq: 4
 }
 
 post {
-  url: {{base_url}}/players
+  url: {{base_url}}/covens
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "id": 123,
-    "name": "Babayaga"
+    "name": "Darker Nights",
+    "description": null
   }
 }
 

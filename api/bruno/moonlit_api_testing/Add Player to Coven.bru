@@ -1,0 +1,15 @@
+meta {
+  name: Add Player to Coven
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/players/{{player_id}}/covens/{{coven_id}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

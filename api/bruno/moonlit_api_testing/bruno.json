@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "moonlit_api_testing",
+  "name": "comprehensive_test",
   "type": "collection",
   "ignore": [
     "node_modules",

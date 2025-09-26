@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class CovenBase(BaseModel):
     name: str = Field(min_length=1)
-    description: Optional[str] = None
+    description: Optional[str] = Field(default=None)
 
 
 class CovenCreate(CovenBase):
@@ -17,13 +17,13 @@ class CovenCreate(CovenBase):
 
 class CovenUpdate(BaseModel):
     name: Optional[str] = Field(default=None, min_length=1)
-    description: Optional[str] = None
+    description: Optional[str] = Field(default=None)
 
 
 class CovenRead(BaseModel):
     id: int
     name: str
-    description: Optional[str] = None
+    description: Optional[str] = Field(default=None)
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -32,7 +32,6 @@ class CovenRead(BaseModel):
 
 class PlayerBase(BaseModel):
     name: Optional[str] = Field(default=None)
-    coven_id: Optional[int] = Field(default=None)
 
 
 class PlayerCreate(PlayerBase):
@@ -41,8 +40,7 @@ class PlayerCreate(PlayerBase):
 
 
 class PlayerUpdate(BaseModel):
-    name: Optional[str] = None
-    coven_id: Optional[int] = None
+    name: Optional[str] = Field(default=None)
 
 
 class PlayerRead(BaseModel):

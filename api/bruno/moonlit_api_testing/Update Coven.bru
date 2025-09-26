@@ -1,0 +1,22 @@
+meta {
+  name: Update Coven
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{base_url}}/covens/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Darker Nights",
+    "description": "A wild and dangerous gathering"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
