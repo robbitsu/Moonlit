@@ -124,6 +124,12 @@ async def delete_coven(coven_id: int):
         session.commit()
         return {"message": "Coven deleted"}
 
+@app.get("/covens/{coven_id}/players")
+async def get_players_in_coven(coven_id: int) -> list[PlayerRead]:
+    with SessionLocal() as session:
+        players = session.query(Player).filter(Player.coven_id == coven_id).all()
+        return [PlayerRead.model_validate(player) for player in players]
+
 #Player-Coven API
 @app.post("/players/{player_id}/covens/{coven_id}")
 async def add_player_to_coven(player_id: int, coven_id: int) -> PlayerRead:

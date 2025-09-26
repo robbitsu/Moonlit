@@ -1,0 +1,15 @@
+meta {
+  name: Get Players in Coven
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{base_url}}/covens/{{coven_id}}/players
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
