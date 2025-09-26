@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import create_engine, String, Integer, DateTime, ForeignKey, MetaData
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship, Mapped, mapped_column
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///:memory:")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///test.db")
 
 engine = create_engine(
     DATABASE_URL,
