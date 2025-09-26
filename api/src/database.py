@@ -26,7 +26,7 @@ class Coven(Base):
 
 class Player(Base):
     __tablename__ = "players"
-    id: Mapped[int] = mapped_column(primary_key=True, index=True, unique=True) # this is the discord user id
+    id: Mapped[int] = mapped_column(primary_key=True, index=True, unique=True, autoincrement=False) # this is the discord user id.
     name: Mapped[str | None] = mapped_column(String, nullable=True) # not discord username; actual 'witch' name
     coven_id: Mapped[int | None] = mapped_column(ForeignKey("covens.id"), nullable=True)
     coven: Mapped["Coven"] = relationship("Coven", back_populates="players")

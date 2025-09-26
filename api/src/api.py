@@ -53,6 +53,12 @@ async def health_check():
 # Player API
 @app.post("/players")
 async def create_player(new_player: PlayerCreate) -> PlayerRead:
+    # Check if the player already exists
+    with SessionLocal() as session:
+        player = session.get(Player, new_player.id)
+        if player:
+            raise HTTPException(status_code=400, detail="Player already exists")
+
     db_player = Player(**new_player.model_dump())
     with SessionLocal() as session:
         session.add(db_player)
