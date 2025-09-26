@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "moonlit_api_testing",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Update Player
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/players/{{player_id}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Babayaga 2",
+    "coven_id": null
+  }
+}
+
+settings {
+  encodeUrl: true
+}

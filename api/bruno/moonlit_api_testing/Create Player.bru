@@ -1,0 +1,23 @@
+meta {
+  name: Create Player
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/players
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id": 123,
+    "name": "Babayaga",
+    "coven_id": null
+  }
+}
+
+settings {
+  encodeUrl: true
+}
