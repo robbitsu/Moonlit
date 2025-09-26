@@ -1,3 +1,4 @@
 moonlit/
 __pycache__/
 .vscode/
+test.db
