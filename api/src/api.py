@@ -10,6 +10,7 @@ from alembic.config import Config as AlembicConfig
 from fastapi import FastAPI, HTTPException, Depends, Response
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 
 from database import SessionLocal, DATABASE_URL, Player, Coven
 from schemas import PlayerCreate, PlayerUpdate, PlayerRead, CovenCreate, CovenRead, CovenUpdate
@@ -142,7 +143,7 @@ async def delete_coven(coven_id: int, db: Session = Depends(get_db)):
     coven = db.get(Coven, coven_id)
     if not coven:
         raise HTTPException(status_code=404, detail="Coven not found")
-    has_players = db.query(Player).filter(Player.coven_id == coven_id).first() is not None
+    has_players = db.scalar(select(Player.id).where(Player.coven_id == coven_id).limit(1)) is not None
     if has_players:
         raise HTTPException(status_code=409, detail="Coven has players; remove players first")
     db.delete(coven)
@@ -152,7 +153,7 @@ async def delete_coven(coven_id: int, db: Session = Depends(get_db)):
 async def get_players_in_coven(coven_id: int, db: Session = Depends(get_db)) -> list[PlayerRead]:
     if not db.get(Coven, coven_id):
         raise HTTPException(status_code=404, detail="Coven not found")
-    players = db.query(Player).filter(Player.coven_id == coven_id).all()
+    players = db.scalars(select(Player).where(Player.coven_id == coven_id)).all()
     return [PlayerRead.model_validate(player) for player in players]
 
 #Player-Coven API
