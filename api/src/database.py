@@ -64,7 +64,7 @@ class BookOfShadowsEntry(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     player_id: Mapped[int] = mapped_column(ForeignKey("players.id"), nullable=False)
     knowledge_key: Mapped[str] = mapped_column(String, nullable=False) # Corresponds to a knowledge file in the knowledge directory
-    unlocked_at: Mapped[DateTime] = mapped_column(DateTime, default=datetime.datetime.now())
+    unlocked_at: Mapped[DateTime] = mapped_column(DateTime, default=datetime.datetime.now)
     player: Mapped["Player"] = relationship("Player", back_populates="book_of_shadows")
 
     def __repr__(self):
