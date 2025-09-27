@@ -33,8 +33,28 @@ class TestAPI(commands.Cog):
         except Exception as e:
             await ctx.reply(f"Request to {url} failed: {e}")
 
+    # Send custom request to API
+    @commands.hybrid_command(name="api_request", description="Send a custom request to the API")
+    async def api_request(self, ctx: commands.Context, url: str, method: str = "GET", body: str = None):
+        if method not in ["GET", "POST", "DELETE"]:
+            await ctx.reply(f"Invalid method: {method}")
+            return
+        if body and method != "POST":
+            await ctx.reply(f"Body can only be used with POST method")
+            return
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                r = await client.request(method, url, json=body)
+                r.raise_for_status()
+                await ctx.reply(f"{method} {url} -> {r.status_code} {r.json()}")
+        except Exception as e:
+            await ctx.reply(f"Request to {url} failed: {e}")
+
 
 async def setup(bot: commands.Bot):
+    # If bot.production is True, throw an error
+    if bot.production:
+        raise Exception("TestAPI cog is not available in production")
     await bot.add_cog(TestAPI(bot))
 
 
