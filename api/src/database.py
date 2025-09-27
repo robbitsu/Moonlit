@@ -40,7 +40,7 @@ class Player(Base):
 class InventoryItem(Base):
     __tablename__ = "inventory_items"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    player_id: Mapped[int] = mapped_column(ForeignKey("players.id"), nullable=False)
+    player_id: Mapped[int] = mapped_column(ForeignKey("players.id"), nullable=False, index=True)
     item_name: Mapped[str] = mapped_column(String, nullable=False)
     quantity: Mapped[int] = mapped_column(default=1)
     player: Mapped["Player"] = relationship("Player", back_populates="inventory")
@@ -48,7 +48,7 @@ class InventoryItem(Base):
 class Familiar(Base):
     __tablename__ = "familiars"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    player_id: Mapped[int] = mapped_column(ForeignKey("players.id"), nullable=False)
+    player_id: Mapped[int] = mapped_column(ForeignKey("players.id"), nullable=False, index=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     type: Mapped[str | None] = mapped_column(String, nullable=True)
     player: Mapped["Player"] = relationship("Player", back_populates="familiars")

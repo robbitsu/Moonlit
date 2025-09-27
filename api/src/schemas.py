@@ -55,16 +55,16 @@ class PlayerRead(BaseModel):
 
 class InventoryItemBase(BaseModel):
     item_name: str = Field(min_length=1)
-    quantity: int = Field(default=1, ge=0)
+    
 
 
 class InventoryItemCreate(InventoryItemBase):
-    player_id: int
+    quantity: int = Field(default=1, ge=0)
 
 
 class InventoryItemUpdate(BaseModel):
     item_name: Optional[str] = Field(default=None, min_length=1)
-    quantity: Optional[int] = Field(default=None, ge=0)
+    quantity: Optional[int] = Field(default=None)
 
 
 class InventoryItemRead(BaseModel):
@@ -74,6 +74,9 @@ class InventoryItemRead(BaseModel):
     quantity: int
 
     model_config = ConfigDict(from_attributes=True)
+
+class InventoryItemDelete(BaseModel):
+    item_name: str = Field(min_length=1)
 
 
 # Familiar Schemas

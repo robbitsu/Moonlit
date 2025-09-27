@@ -13,6 +13,7 @@ from database import DATABASE_URL
 from routers.core import router as core_router
 from routers.players import router as players_router
 from routers.covens import router as covens_router
+from routers.inventory import router as inventory_router
 
 
 def _build_alembic_config() -> AlembicConfig:
@@ -45,6 +46,7 @@ app = FastAPI(title="Moonlit API", version="1.0.0", lifespan=lifespan)
 app.include_router(core_router)
 app.include_router(players_router)
 app.include_router(covens_router)
+app.include_router(inventory_router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8123)
