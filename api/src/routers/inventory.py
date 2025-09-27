@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
@@ -38,7 +37,7 @@ async def get_inventory_items(player_id: int, db: Session = Depends(get_db)) -> 
     return [InventoryItemRead.model_validate(inventory_item) for inventory_item in inventory_items]
 
 
-@router.put("/{player_id}", response_model=InventoryItemRead)
+@router.put("/{player_id}", response_model=InventoryItemRead, responses={204: {"description": "Item deleted"}})
 async def update_inventory_item(player_id: int, inventory_item: InventoryItemUpdate, db: Session = Depends(get_db)) -> InventoryItemRead:
     db_player = db.get(Player, player_id)
     if not db_player:
@@ -52,19 +51,28 @@ async def update_inventory_item(player_id: int, inventory_item: InventoryItemUpd
             db.flush()
             return Response(status_code=204)
         db_inventory_item.quantity = inventory_item.quantity
-    if inventory_item.item_name is not None:
+    if inventory_item.item_name is not None and inventory_item.item_name != db_inventory_item.item_name:
+        # Prevent duplicate names per player by merging quantities if target exists
+        existing = db.scalar(select(InventoryItem).where(InventoryItem.item_name == inventory_item.item_name, InventoryItem.player_id == player_id))
+        if existing:
+            existing.quantity += db_inventory_item.quantity
+            db.delete(db_inventory_item)
+            db.flush()
+            db.refresh(existing)
+            return InventoryItemRead.model_validate(existing)
         db_inventory_item.item_name = inventory_item.item_name
     db.flush()
     db.refresh(db_inventory_item)
     return InventoryItemRead.model_validate(db_inventory_item)
 
-@router.delete("/{player_id}", status_code=204)
-async def delete_inventory_item(player_id: int, inventory_item: InventoryItemDelete, db: Session = Depends(get_db)):
+@router.delete("/{player_id}/{item_name}", status_code=204)
+async def delete_inventory_item(player_id: int, item_name: str, db: Session = Depends(get_db)):
     db_player = db.get(Player, player_id)
     if not db_player:
         raise HTTPException(status_code=404, detail="Player not found")
-    db_inventory_item = db.scalar(select(InventoryItem).where(InventoryItem.item_name == inventory_item.item_name, InventoryItem.player_id == player_id))
+    db_inventory_item = db.scalar(select(InventoryItem).where(InventoryItem.item_name == item_name, InventoryItem.player_id == player_id))
     if not db_inventory_item:
         raise HTTPException(status_code=404, detail="Inventory item not found")
     db.delete(db_inventory_item)
+    db.flush()
     return Response(status_code=204)

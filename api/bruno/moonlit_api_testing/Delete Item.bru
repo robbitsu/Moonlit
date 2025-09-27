@@ -5,7 +5,7 @@ meta {
 }
 
 delete {
-  url: {{base_url}}/inventory/{{player_id}}
+  url: {{base_url}}/inventory/{{player_id}}/{{item_name}}
   body: json
   auth: inherit
 }
@@ -14,6 +14,10 @@ body:json {
   {
     "item_name": "Milk of Amnesia"
   }
+}
+
+vars:pre-request {
+  item_name: Milk of Amnesia
 }
 
 settings {

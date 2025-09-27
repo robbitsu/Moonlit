@@ -1,6 +1,6 @@
 import os
 import datetime
-from sqlalchemy import create_engine, String, Integer, DateTime, ForeignKey, MetaData
+from sqlalchemy import create_engine, String, Integer, DateTime, ForeignKey, MetaData, UniqueConstraint
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship, Mapped, mapped_column
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///test.db")
@@ -39,6 +39,9 @@ class Player(Base):
 
 class InventoryItem(Base):
     __tablename__ = "inventory_items"
+    __table_args__ = (
+        UniqueConstraint("player_id", "item_name", name="uq_inventory_player_item"),
+    )
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     player_id: Mapped[int] = mapped_column(ForeignKey("players.id"), nullable=False, index=True)
     item_name: Mapped[str] = mapped_column(String, nullable=False)
