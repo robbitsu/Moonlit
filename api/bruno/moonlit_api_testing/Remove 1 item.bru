@@ -1,0 +1,22 @@
+meta {
+  name: Remove 1 item
+  type: http
+  seq: 10
+}
+
+put {
+  url: {{base_url}}/inventory/{{player_id}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "item_name": "Milk of Amnesia",
+    "quantity": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+}

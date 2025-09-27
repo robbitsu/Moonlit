@@ -1,0 +1,23 @@
+meta {
+  name: Add Item to Player
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{base_url}}/inventory/{{player_id}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "item_name": "Milk of Amnesia",
+    "quantity": 2,
+    "player_id": {{player_id}}
+  }
+}
+
+settings {
+  encodeUrl: true
+}

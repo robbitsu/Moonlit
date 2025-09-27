@@ -1,11 +1,11 @@
 meta {
-  name: Delete Player
+  name: Get Items
   type: http
-  seq: 15
+  seq: 11
 }
 
-delete {
-  url: {{base_url}}/players/{{player_id}}
+get {
+  url: {{base_url}}/inventory/{{player_id}}
   body: none
   auth: inherit
 }
