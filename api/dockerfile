@@ -1,0 +1,30 @@
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+# System deps (curl for healthchecks/logs if needed)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install deps first for better layer caching
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application
+COPY src ./src
+COPY alembic ./alembic
+
+ENV PYTHONPATH=/app/src \
+    PORT=8123 \
+    HOST=0.0.0.0
+
+EXPOSE 8123
+
+# Start API with uvicorn (module path uses PYTHONPATH)
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8123"]
+

@@ -3,6 +3,8 @@ from discord.ext import commands
 from discord.app_commands import AppCommandContext
 from dotenv import load_dotenv
 import os
+import pkgutil
+import importlib
 
 load_dotenv()
 
@@ -12,15 +14,25 @@ intents.message_content = True
 
 owner = os.getenv('OWNER')
 
-bot = commands.Bot(command_prefix='!', intents=intents, allowed_contexts=AppCommandContext(guild=True, dm_channel=False, private_channel=False), owner_id=owner)
+bot = commands.Bot(command_prefix='!', intents=intents, allowed_contexts=AppCommandContext(guild=True, dm_channel=False, private_channel=False), owner_id=int(owner))
 
 bot.moon_phase: str = ""
 
+bot.production = os.getenv('PRODUCTION') == 'True'
+
 async def load_cogs():
-    for file in os.listdir('./cogs'):
-        if file.endswith('.py'):
-            await bot.load_extension(f'cogs.{file[:-3]}')
-            print(f'Loaded cog: {file[:-3]}')
+    try:
+        cogs_pkg = importlib.import_module('cogs')
+    except ModuleNotFoundError:
+        print('No cogs package found')
+        return
+    for module_info in pkgutil.iter_modules(cogs_pkg.__path__):
+        name = module_info.name
+        # Skip test files in production mode
+        if bot.production and name.startswith('test_'):
+            continue
+        await bot.load_extension(f'cogs.{name}')
+        print(f'Loaded cog: {name}')
 
 @bot.event
 async def on_ready():

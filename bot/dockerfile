@@ -1,0 +1,25 @@
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install deps first for caching
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy bot source
+COPY src ./src
+
+ENV PYTHONPATH=/app/src \
+    PRODUCTION=True
+
+# The bot is started by running its entry module
+CMD ["python", "-m", "src.bot"]
+
