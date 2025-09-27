@@ -48,6 +48,14 @@ async def delete_player(player_id: int, db: Session = Depends(get_db)):
     player = db.get(Player, player_id)
     if not player:
         raise HTTPException(status_code=404, detail="Player not found")
+
+    # If the player is the last player in a coven, delete the coven.
+    if player.coven_id:
+        coven = db.get(Coven, player.coven_id)
+        if not coven:
+            raise HTTPException(status_code=500, detail="Player is in a coven, but the coven does not exist")
+        if len(coven.players) == 1:
+            db.delete(coven)
     db.delete(player)
     return Response(status_code=204)
 
